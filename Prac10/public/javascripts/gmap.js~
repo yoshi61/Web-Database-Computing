@@ -1,0 +1,50 @@
+var map;
+var markerArray=[];
+
+function initialize() {
+
+    var mapOptions = {
+	center: new google.maps.LatLng(-34.918430, 138.582479),
+	zoom: 8
+    };
+    map = new google.maps.Map(
+			  document.getElementById("map-canvas"),
+			  mapOptions);
+}
+
+function selectFriends() {
+    var postURL = "http://localhost:3000/selectFriends";
+    var formElement = document.getElementById('addForm');
+
+    var updateReq = new XMLHttpRequest();
+    
+    var name = formElement.elements['name'].value;
+    var lat = formElement.elements['lat'].value;
+    var lng = formElement.elements['lng'].value;
+
+    addReq.onreadystatechange = function() {
+    	if (addReq.readyState==4 && addReq.status==200) {
+	    console.log('updating map');
+	    var marker = new google.maps.Marker({
+		    position: new google.maps.LatLng(lat, lng),
+		    title: name,
+		    map: map
+		});
+	    markerArray.push(marker);
+	}
+    }
+
+    var formData = {"name":name,"lat":lat,"lng":lng};
+    addReq.open("POST", postURL, true);
+    addReq.setRequestHeader('Content-Type', 'application/json');
+    addReq.send(JSON.stringify(formData));
+}
+
+function clearMarkers() {
+    while(markerArray.length > 0) {
+	markerArray[0].setMap(null);
+	markerArray.splice(0,1);
+    }
+};
+
+google.maps.event.addDomListener(window, 'load', initialize);

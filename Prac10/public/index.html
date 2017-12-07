@@ -1,0 +1,45 @@
+<!-- Tullie(a1646941), Andrew(a1646742), Hideki(a1658945) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="stylesheets/normalize.css">
+	<link rel="stylesheet" type="text/css" href="stylesheets/source.css"> 
+	<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDgc-SRl6lfKwfSm2upFlxrg7bt8HNQ_nQ"></script>
+	<title> FriendFinder </title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+
+<body>
+	<script src="javascripts/facebook.js"></script>
+	<div id="page">
+
+		<!-- Top bar -->
+		<header id="header">
+
+			<span id="right-header">
+                <fb:login-button id="fbButton" scope="user_friends, user_tagged_places" onlogin="checkLoginState();" data-auto-logout-link="true">
+				</fb:login-button>			
+			</span>
+
+			<h1 id="title">Friend Finder</h1>
+
+		</header>
+
+		<!-- Map Area -->
+		<div id="map-area">
+			<aside id="side-panel">
+
+				<div id="friends" class="inline">
+				</div>
+
+			</aside>
+
+			<div id="map-canvas"></div>
+
+		</div>
+
+	</div>
+	<script src="javascripts/gmap.js"></script>
+</body>
+</html>

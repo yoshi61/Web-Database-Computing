@@ -1,0 +1,41 @@
+var db = require('www');
+
+// modified to use database
+exports.getData = function(callback) {
+    db.dbConnectionPool.getConnection(
+	    function(err, connection) {
+		if (err) {
+		    // on err return empty friends
+		    callback({"friends": [{}]});
+		}
+		else
+		    // get my facebook id
+		    var myID = 
+			connection.query('SELECT friend.fbid2 FROM friend where friend.fbid1=myID');
+
+	    connection.release();
+
+    /*
+    fs.readFile(path.join(exports.dataDir,'data.json'),
+		function(err, data) {
+		    if (err) throw err;
+		    var obj = JSON.parse(data);
+		    callback(obj);
+		});
+};
+    */
+
+exports.writeData = function(jsonData, callback) {
+    fs.readFile(path.join(exports.dataDir, 'data.json'), 
+	  function(err, data) {
+	    if (err) throw err;
+	    var obj = JSON.parse(data);
+	    obj.friends[obj.friends.length] = jsonData;
+	    fs.writeFile(path.join(exports.dataDir,'data.json'),
+			 JSON.stringify(obj), 
+			 function(err) {
+			     if (err) throw err;
+			     callback();
+			 });
+		});
+}

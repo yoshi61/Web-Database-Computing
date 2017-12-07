@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+      <link rel="stylesheet" href="stylesheets/gmap.css">
+      <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDgc-SRl6lfKwfSm2upFlxrg7bt8HNQ_nQ">
+</script>
+</head>
+
+<body>
+<script src="javascripts/facebook.js"></script>
+<fb:login-button id="fbButton" scope="user_friends, user_tagged_places" onlogin="checkLoginState();">
+</fb:login-button>
+<fieldset>
+<legend>Select Friends to Show</legend>
+<div id="friends" class="inline">
+</div>
+</fieldset>
+<div id="map-canvas"></div>
+<script src="javascripts/gmap.js"></script>
+</body>
+</html>

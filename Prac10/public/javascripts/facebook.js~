@@ -1,0 +1,208 @@
+window.fbAsyncInit = function() {
+    FB.init({
+	    appId      : '345789012246898',
+	    xfbml      : true, 
+	    cookie     : true,
+	    version    : 'v2.0',
+	    status     : true
+        });
+
+    FB.ui({
+	    method: 'share',
+            href: '//developers.facebook.com/docs/'
+	  }, function(response){});
+
+};
+
+(function(d, s, id){
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) {return;}
+    js = d.createElement(s); js.id = id;
+    js.src = "https://connect.facebook.net/en_US/sdk.js"; 
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+
+function checkLoginState() {
+    FB.getLoginStatus(function(response) {
+          console.log(response.status);
+	    
+	  if (response.status === 'connected') {
+	      // remove facebook button
+		var loginButton = document.getElementById("fbButton");
+		loginButton.parentNode.removeChild(loginButton);
+		
+		// send access token to server
+		authToServer(response, 
+		     function () {
+				 // after logged in, get friends data and add to map
+				 /* REPLACE THE LINE BELOW with the ones commented below
+				    once PART 2 is complete */
+				 generateFriendList();
+				 // addFriendsToMap (function() {
+				 //       console.log("calling generate friend list");
+				 //       generateFriendList();
+				 //    });
+			     });
+	    }
+		    
+	    else if (response.status === 'not_authorised'){
+		console.log('App not authorised');
+		FB.login(function(response) {
+			// re-check state
+			checkLoginState();
+		    },
+		    {scope: 'user_friends'});
+	    }
+	    else {
+		console.log('Not logged in');
+		FB.login(function(response) {
+			// re-check state
+			checkLoginState();
+		    },
+		    {scope: 'user_friends'});
+	    }	
+	});
+}
+
+function authToServer(auth, callback) {
+    var authReq = new XMLHttpRequest();
+
+    authReq.onreadystatechange = function() {
+	if (authReq.readyState==4 && authReq.status==200) {
+	    console.log('logged in with server');
+	    callback();
+	}}
+    authReq.open("POST", "http://localhost:3000/auth", true);
+    authReq.setRequestHeader('Content-Type', 'application/json');
+    authReq.send(JSON.stringify(auth));
+}
+
+function generateFriendList() {
+    // generate friends list for selection
+    console.log("generating friends list");
+    var dataURL = "http://localhost:3000/model/friendslist";
+    var friendsListReq = new XMLHttpRequest();
+    
+    friendsListReq.onreadystatechange = function() {
+	if (friendsListReq.readyState==4 && friendsListReq.status==200) {
+	    console.log('returned from server friend list request');
+	    var jsonData = JSON.parse(friendsListReq.responseText);
+	    /* data is in format:
+	       { friends: [ {name:  friendsname, visible: showorhide } ] }
+	    */
+	    var friends = jsonData.friends;
+	    var numFriends = friends.length;
+
+	    // get div to put friend checkboxes in
+	    var friendDiv = document.getElementById("friends");
+
+	    // create a checkbox for each friend
+	    var friendIndex = 0;
+	    while (friendIndex < numFriends) {
+		var friend = friends[friendIndex];
+
+		// Friend Name [X]  (name then checkbox)
+		// add friend name label
+		var label = document.createTextNode(friend.name);
+		friendDiv.appendChild(label);
+
+		// add checkbox
+		var checkbox = document.createElement("input");
+		var att = document.createAttribute("type");
+		att.value = "checkbox";
+		var name = document.createAttribute("name");
+		name.value = "friend";
+		var value = document.createAttribute("value");
+		value.value = friend.name;
+		checkbox.setAttributeNode(att);
+		checkbox.setAttributeNode(name);
+		checkbox.setAttributeNode(value);
+		if (friend.visible == 'show') {
+		    checkbox.checked=true;
+		}
+		/* add a listener to the checkbox so when friend it is 
+		   checked/unchecked update server of change 
+		   and request friend data
+		*/
+		checkbox.addEventListener("click", function() {
+			var visible;
+			console.log("checked: "+this.checked);
+			if (this.checked == true)
+			    visible = 'show';
+			else visible = 'hide';
+
+			/* DESIGN IMPROVEMENT IDEA: hide markers dynamically 
+			   when name unchecked 
+			   no need to call addFriendsToMap.
+			   send update of show/hide to server 
+			   Remove any duplicate friend markers
+			   currently always updates server and 
+			   doesn't remove markers
+			*/
+			updateFriendStatus(this.getAttribute("value"),
+					   visible,
+					   function() {
+					       // after server updates
+					       /* UNCOMMENT THESE 2 lines WHEN PART 2 COMPLETE */
+					       // clearMarkers();
+					       // addFriendsToMap(function(){});
+
+					   });
+		    });
+
+		// append checkbox to the div element
+		friendDiv.appendChild(checkbox);
+
+		// get next friend to add
+		friendIndex++;
+	    }
+	}
+ 
+    }
+
+    friendsListReq.open("GET", dataURL, true);
+    friendsListReq.send();
+}
+
+function updateFriendStatus(friendName, newStatus, callback) {
+    var req = new XMLHttpRequest();
+
+    req.onreadystatechange = function() {
+	if (req.readyState==4 && req.status==200) {
+	    console.log('friend status updated: ' + friendName);
+	    callback();
+	}}
+    req.open("POST", "http://localhost:3000/updateFriendStatus", true);
+    req.setRequestHeader('Content-Type', 'application/json');
+    var updateObj = { name:friendName, visible:newStatus };
+    req.send(JSON.stringify(updateObj));
+}
+
+function addFriendsToMap(callback) {
+    var dataURL = "http://localhost:3000/model/friends.json";
+    var friendsReq = new XMLHttpRequest();
+    
+    friendsReq.onreadystatechange = function() {
+	if (friendsReq.readyState==4 && friendsReq.status==200) {
+	    console.log('returned from server facebook request');
+	    var jsonData = JSON.parse(friendsReq.responseText);
+	    var friends = jsonData.friends;
+	    var index = 0;
+	    while (index < friends.length) {
+		var friend = friends[index];
+		var marker = new google.maps.Marker({
+			position: new google.maps.LatLng(
+							 friend.lat,
+							 friend.lng),
+			title: friend.name,
+			map: map
+		    });
+		markerArray.push(marker);
+		index++;
+	    }
+	    callback();
+	}
+    }
+    friendsReq.open("GET", dataURL, true);
+    friendsReq.send();
+}

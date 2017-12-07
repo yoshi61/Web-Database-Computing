@@ -1,0 +1,132 @@
+/**************************************
+GENERAL
+***************************************/
+
+html {
+	height: 100%;
+	width: 100%;
+}
+
+body {
+	height: 100%;
+	width: 100%;
+	font-family: Helvetica, Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+}
+
+a {
+	text-decoration: none;
+	color: grey;
+}
+
+a:hover {
+	color: LightGrey;
+}
+
+/**************************************
+MAIN PAGE
+***************************************/
+
+#page {
+	height: 100%;
+	width: 100%;
+}
+
+/**************************************
+TOP HEADER
+***************************************/
+
+#header {
+	max-height: 60px;
+	min-width: 600px;
+	display: block;
+	text-align: center;
+	padding: 10px 15px 10px 15px;
+}
+
+#search {
+	/* TODO: custom search bar look */;
+	float: left;
+}
+
+#title {
+	font-size: 25px;
+	margin: 0; /* important */
+	line-height: 1.00; /* important */
+}
+
+#header-buttons {
+	color: grey;
+	float: right;
+}
+
+/**************************************
+SIDE NAV AND MAP CANVAS
+***************************************/
+
+#map-area {
+	height: calc(100% - 80px); /* main height variable */
+	border-style: solid;
+	border-width: 1px 0px 1px 0px;
+	border-color: grey;
+}
+
+#side-panel {
+	height: 100%;
+	width: 250px;
+	border-right-style: solid;
+    border-width: 1px;
+	float: left;
+}
+
+#side-list {
+	/* TODO: custom image list style */
+	list-style-type: none; 
+	margin: 0px;
+	padding: 0px;
+}
+
+.side-list-element {
+	border-bottom-style: solid;
+	border-width: 1px;
+	border-color: grey;
+	padding: 20px;
+}
+
+.side-list-element:hover {
+	background-color: LightGrey;
+}
+
+.friend-detail {
+	padding-top: 10px;
+	margin-left: 20px;
+	color: grey;
+}
+
+.friend-title {
+	margin: 5px;
+}
+
+#map-canvas {
+	height: 100%;
+}
+
+/**************************************
+FOOTER
+***************************************/
+
+/* if footer is not extending to bottom, recalc #map-area height*/
+
+#footer {
+    padding: 5px;
+    background-color: white;
+	color: grey;
+	text-align: center;
+	width: 100%;
+}
+	
+#footer p {
+	margin: 0; /* important */
+}
+

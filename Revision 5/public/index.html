@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="css/normalize.css">
+	<link rel="stylesheet" type="text/css" href="css/source.css">
+	<title>FriendFinder</title>
+</head>
+<body>
+	<div id="page">
+
+		<!-- Top bar -->
+		<header id="header">
+
+			<!-- TODO: search bar logic -->
+			<form id="search"> 
+				<input id="search-box" type="text" maxlength="400" />
+				<input id="submit-button" type="submit" value="Search" />
+			</form>
+
+			<!-- TODO: custom image buttons -->
+			<span id="header-buttons">
+				<a href="">Button 1</a>
+				<a href="">Button 2</a>
+			</span>
+			
+			<h1 id="title">Friend Finder</h1>
+
+		</header>
+
+		<!-- Map Area -->
+		<div id="map-area">
+			<aside id="side-panel">
+
+				<!-- TODO: dynamic friend list -->
+				<ul id="side-list">
+                    <!--
+					<li class="side-list-element">
+						<h4 class="friend-title">John Smith</h4>
+						<span class="friend-detail">5mins | Awesome place</span>
+					 </li>
+					<li class="side-list-element">
+						<h4 class="friend-title">David Bound</h4>
+						<span class="friend-detail">1hr | Cool place</span>
+					</li>
+					<li class="side-list-element">
+						<h4 class="friend-title">Sarah Lee</h4>
+						<span class="friend-detail">30mins | Nice place</span>
+					</li>
+                    !-->
+				</ul>
+			</aside>
+
+			<!-- TODO: add map -->
+			<div id="map-canvas">
+			</div>
+
+		</div>
+
+		<!-- Footer -->
+		<footer id="footer">
+			<p>Andrew, Hideki, Tullie &copy; 2014</p>
+		</footer>
+	</div>
+</body>
+<script src="js/map.js" type="text/javascript"></script>
+<script src="js/friendList.js" type="text/javascript"></script>
+</html>

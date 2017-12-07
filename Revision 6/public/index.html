@@ -1,0 +1,57 @@
+<!-- Tullie(a1646941), Andrew(a1646742), Hideki(a1658945) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="css/normalize.css">
+	<link rel="stylesheet" type="text/css" href="css/source.css">
+	<title>FriendFinder</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+<body>
+	<div id="page">
+
+		<!-- Top bar -->
+		<header id="header">
+
+			<!-- TODO: search bar logic -->
+			<form id="search"> 
+				<input id="search-box" type="text" maxlength="400" />
+				<input id="submit-button" type="submit" value="Search" />
+			</form>
+
+			<!-- TODO: custom image buttons -->
+			<span id="header-buttons">
+				<a href="">Button 1</a>
+				<a href="">Button 2</a>
+			</span>
+			
+			<h1 id="title">Friend Finder</h1>
+
+		</header>
+
+		<!-- Map Area -->
+		<div id="map-area">
+			<aside id="side-panel">
+
+				<!-- TODO: dynamic friend list -->
+				<ul id="side-list">
+				</ul>
+
+			</aside>
+
+			<!-- TODO: add map -->
+			<div id="map-canvas">
+			</div>
+
+		</div>
+
+		<!-- Footer -->
+		<footer id="footer">
+			<p>Andrew, Hideki, Tullie &copy; 2014</p>
+		</footer>
+	</div>
+</body>
+<script src="js/map.js" type="text/javascript"></script>
+<script src="js/friendList.js" type="text/javascript"></script>
+</html>
